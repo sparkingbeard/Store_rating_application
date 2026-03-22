@@ -6,7 +6,7 @@ import { getStoreOwnerDashboard } from '../controllers/storeOwnerController.js';
 const router = express.Router();
 
 // Only STORE_OWNER access
-router.use(authMiddleware, roleMiddleware(['STORE_OWNER']));
+router.use(authMiddleware, roleMiddleware(['STORE_OWNER', 'ADMIN']));
 
 router.get('/dashboard', getStoreOwnerDashboard);
 

@@ -9,57 +9,47 @@ export const createStoreService = async (data) => {
     throw new Error('Name and address are required');
   }
 
-  const store = await Store.create({
-    name,
-    email,
-    address,
-    owner_id
-  });
-
-  return store;
+  return await Store.create({ name, email, address, owner_id });
 };
 
-export const getAllStoresService = async (userId, query = {}) => {
-  const { name, address } = query;
+// Get all stores with average ratings AND specific user's rating
+export const getAllStoresService = async (userId, filters = {}) => {
+  const { name, email, address } = filters;
 
   const stores = await Store.findAll({
     where: {
       ...(name && { name: { [Op.like]: `%${name}%` } }),
+      ...(email && { email: { [Op.like]: `%${email}%` } }),
       ...(address && { address: { [Op.like]: `%${address}%` } })
+    },
+    attributes: {
+      include: [
+        // Calculate Global Average Rating
+        [
+          sequelize.fn('AVG', sequelize.col('Ratings.rating')),
+          'avgRating'
+        ],
+        // Optimization: Subquery to get the specific user's rating without a loop
+        [
+          sequelize.literal(`(
+            SELECT rating FROM Ratings 
+            WHERE Ratings.store_id = Store.id 
+            AND Ratings.user_id = ${sequelize.escape(userId)} 
+            LIMIT 1
+          )`),
+          'userRating'
+        ]
+      ]
     },
     include: [
       {
         model: Rating,
-        attributes: []
+        attributes: [] // Keep this empty so we don't return all rating objects
       }
     ],
-    attributes: {
-      include: [
-        [
-          sequelize.fn('AVG', sequelize.col('Ratings.rating')),
-          'avgRating'
-        ]
-      ]
-    },
-    group: ['Store.id']
+    group: ['Store.id'],
+    subQuery: false // Necessary when using group by and limits in Sequelize
   });
 
-  // attach user rating
-  const result = [];
-
-  for (let store of stores) {
-    const userRating = await Rating.findOne({
-      where: {
-        user_id: userId,
-        store_id: store.id
-      }
-    });
-
-    result.push({
-      ...store.toJSON(),
-      userRating: userRating ? userRating.rating : null
-    });
-  }
-
-  return result;
+  return stores;
 };

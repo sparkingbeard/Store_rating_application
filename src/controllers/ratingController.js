@@ -5,10 +5,12 @@ import {
 
 export const submitRating = async (req, res) => {
   try {
-    const { storeId, rating } = req.body;
+    const { rating } = req.body;
+    const {storeId} = req.params;
+    const {userId} = req.user.id;
 
     const result = await submitRatingService(
-      req.user.id,
+      userId,
       storeId,
       rating
     );

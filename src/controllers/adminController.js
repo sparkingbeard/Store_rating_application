@@ -1,8 +1,5 @@
-import {
-  getAdminDashboardService,
-  getAllUsersService,
-  getAllStoresService
-} from '../services/adminService.js';
+import {getAdminDashboardService} from '../services/adminService.js';
+import { getAllUsersService } from '../services/userService.js';
 
 export const getAdminDashboard = async (req, res) => {
   try {
