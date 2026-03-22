@@ -9,6 +9,6 @@ import { roleMiddleware } from '../middleware/roleMiddleware.js';
 const router = express.Router();
 
 router.post('/add/:storeId', authMiddleware, roleMiddleware(['USER']), submitRating);
-router.put('/update', authMiddleware, roleMiddleware(['USER']), updateRating);
+router.put('/update/:storeId', authMiddleware, roleMiddleware(['USER']), updateRating);
 
 export default router;

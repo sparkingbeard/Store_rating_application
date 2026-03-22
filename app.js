@@ -20,7 +20,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Connect routes
+// Connect routes to controllers
 app.use('/api/auth', authRoutes);
 app.use('/api/stores', storeRoutes);
 app.use('/api/ratings', ratingRoutes);

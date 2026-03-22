@@ -18,7 +18,7 @@ export const createStore = async (req, res) => {
 export const getAllStores = async (req, res) => {
   try {
     const stores = await getAllStoresService(
-      req.user.id,
+      req.userId,
       req.query
     );
 

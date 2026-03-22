@@ -8,7 +8,8 @@ export const authMiddleware = (req, res, next) => {
 
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; // user id and role
+    req.userId = decoded.id;
+    req.role = decoded.role;
 
     next();
   } catch (error) {

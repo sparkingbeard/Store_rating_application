@@ -6,8 +6,8 @@ import {
 export const submitRating = async (req, res) => {
   try {
     const { rating } = req.body;
-    const {storeId} = req.params;
-    const {userId} = req.user.id;
+    const storeId = req.params.storeId;
+    const userId = req.userId;
 
     const result = await submitRatingService(
       userId,
@@ -23,10 +23,12 @@ export const submitRating = async (req, res) => {
 
 export const updateRating = async (req, res) => {
   try {
-    const { storeId, rating } = req.body;
+    const { rating } = req.body;
+    const storeId = req.params.storeId;
+    const userId = req.userId;
 
     const result = await updateRatingService(
-      req.user.id,
+      userId,
       storeId,
       rating
     );
