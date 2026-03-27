@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+dotenv.config();
 import express from 'express';
 import cors from 'cors';
 
@@ -13,7 +14,6 @@ import adminRoutes from './src/routes/adminRoutes.js';
 import storeOwnerRoutes from './src/routes/storeOwnerRoutes.js';
 
 
-dotenv.config();
 
 const app = express();
 

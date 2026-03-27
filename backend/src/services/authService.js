@@ -29,7 +29,7 @@ export const signupService = async (data) => {
     { expiresIn: '1d' }
   );
 
-  const {password: pwd, ...safeUser} = user.toJSON();
+  const { password: pwd, ...safeUser } = user.toJSON();
 
   return {
     user: safeUser,
@@ -56,6 +56,6 @@ export const loginService = async (data) => {
     { expiresIn: '1d' }
   );
 
-  const {password: pwd, ...safeUser} = user.toJSON();
+  const { password: _, ...safeUser } = user.toJSON();
   return { safeUser, token };
 };

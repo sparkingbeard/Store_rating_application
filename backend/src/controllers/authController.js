@@ -17,7 +17,7 @@ export const signup = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { safeUser, token } = await loginService(req.body);
-
+    // console.log('Login successful for user:', safeUser.email, token);
     res.json({
       message: 'Login successful',
       token,
